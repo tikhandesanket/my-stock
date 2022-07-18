@@ -1,0 +1,36 @@
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<% flash.each do |type, msg| %>
+  <% if (type == "notice") %>
+    <div class="alert alert-success">
+      <%= msg %>
+    </div>
+  <% elsif (type == "error") %>
+    <div class="alert alert-danger">
+      <%= msg %>
+    </div>
+  <% else %>     
+    <div class="alert alert-info">
+      <%= msg %>
+    </div>
+  <% end %>
+<% end %>
+<div class="digg_pagination">
+  <div class="page_info">
+    <%= page_entries_info @items %>
+  </div>
+</div>
+
+  <div class="card card-body">
+    <%= form_tag items_path, :method => 'get', class: "form-inline", remote: true do %>
+      <%= hidden_field_tag :search, 'YES' %>
+
+      State :  <%= select_tag(:option, options_for_select([["All",""],["Listed","listed"],["Delisted","delisted"]], params[:option] ), onchange: "this.form.submit();",class:"select form-control") %>
+
+      <%= submit_tag "Search", class: 'btn btn-dark mb-2' %>
+    <% end %>
+  </div>
+
+
+<div id="item-list">
+  <%= render partial: 'items', locals:{items: @items}%>
+</div>
